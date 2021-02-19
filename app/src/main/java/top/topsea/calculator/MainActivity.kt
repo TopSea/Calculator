@@ -125,26 +125,26 @@ class MainActivity : AppCompatActivity() {
 //        return true
 //    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
-        return when (item.itemId) {
-            R.id.scale -> {
-//                enterPictureInPictureMode()
-                val aspectRatio = Rational(37, 59)
-                val rect = Rect(5, 5, 5, 5)
-                val picture = PictureInPictureParams.Builder().setAspectRatio(
-                    aspectRatio
-                ).setSourceRectHint(rect).build()
-                enterPictureInPictureMode(picture)
-                true
-            }
-            R.id.settings -> {
-
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle item selection
+//        return when (item.itemId) {
+//            R.id.scale -> {
+////                enterPictureInPictureMode()
+//                val aspectRatio = Rational(37, 59)
+//                val rect = Rect(5, 5, 5, 5)
+//                val picture = PictureInPictureParams.Builder().setAspectRatio(
+//                    aspectRatio
+//                ).setSourceRectHint(rect).build()
+//                enterPictureInPictureMode(picture)
+//                true
+//            }
+//            R.id.settings -> {
+//
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
     @SuppressLint("SetTextI18n")
     private fun printFormula(count: Boolean) {
