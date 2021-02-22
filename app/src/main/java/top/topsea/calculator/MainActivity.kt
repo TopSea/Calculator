@@ -1,15 +1,15 @@
 package top.topsea.calculator
 
 import android.annotation.SuppressLint
-import android.app.PictureInPictureParams
-import android.graphics.Rect
+import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Rational
-import android.view.MenuItem
+import android.text.format.DateUtils
 import android.view.View
-import android.widget.MultiAutoCompleteTextView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import top.topsea.calculator.database.Record
+import top.topsea.calculator.database.RecordDao
+import top.topsea.calculator.database.RecordDatabase
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,9 +25,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recordsText:TextView
     private var done:Boolean = false
 
+    private lateinit var database: RecordDatabase
+    private lateinit var recordDao: RecordDao
+    private lateinit var record: Record
+    private var howManyRecords: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //数据库
+        database = RecordDatabase.getInstance(this)!!
+        recordDao = database.recordDao()
+        val records: List<String> = recordDao.getAllRecord()
+        record = Record(0, "", "")
+        howManyRecords = records.size
 
         //隐藏菜单栏
 //        supportActionBar?.hide()
@@ -56,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     "num" -> {
                         texts[i][j]?.setOnClickListener { v: View? ->
                             run {
-                                if (done){
+                                if (done) {
                                     formula.replace(0, formula.length, "")
                                     done = false
                                 }
@@ -96,11 +108,21 @@ class MainActivity : AppCompatActivity() {
                     "calculation" -> {
                         texts[i][j]?.setOnClickListener { v: View? ->
                             run {
-                                val result: String = SuffixCalculator.Calculating(formula.toString()) as String
+                                val result: String =
+                                    SuffixCalculator.Calculating(formula.toString()) as String
+                                record.formula = result
+                                val c: Calendar = Calendar.getInstance()
+                                val mYear: Int = c.get(Calendar.YEAR)
+                                val mMonth: Int = c.get(Calendar.MONTH)
+                                val mDay: Int = c.get(Calendar.DAY_OF_MONTH)
+                                val time = "$mYear-$mMonth-$mDay"
+                                record.time = time
+                                record.recordId = howManyRecords % 50
                                 formula.append(texts[i][j]?.text)
                                 formula.append(result)
                                 recordsText.append(formula.toString() + "\n")
                                 done = true
+                                howManyRecords++
                                 printFormula(false)
                             }
                         }
@@ -116,7 +138,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 
     //弃用
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -145,6 +166,12 @@ class MainActivity : AppCompatActivity() {
 //            else -> super.onOptionsItemSelected(item)
 //        }
 //    }
+
+    private fun iniRecords(records: List<String>){
+        records.forEach {
+            recordsText.append(it + "\n")
+        }
+    }
 
     @SuppressLint("SetTextI18n")
     private fun printFormula(count: Boolean) {
