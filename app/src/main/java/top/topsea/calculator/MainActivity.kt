@@ -3,6 +3,7 @@ package top.topsea.calculator
 import android.annotation.SuppressLint
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -36,15 +37,15 @@ class MainActivity : AppCompatActivity() {
         formulaText = findViewById<TextView>(R.id.formula)
         resultText = findViewById<TextView>(R.id.result)
         recordsText = findViewById<TextView>(R.id.records_text)
-        resultText.text = ""
+//        resultText.text = ""
 
         //数据库
         database = RecordDatabase.getInstance(this)!!
         recordDao = database.recordDao()
-        val records: List<String> = recordDao.getAllRecord()
-        iniRecords(records)
+        var recordS: List<String> = recordDao.getAllRecord()
+        iniRecords(recordS)
         record = Record(0, "", "")
-        howManyRecords = records.size
+        howManyRecords = recordS.size
 
         //隐藏菜单栏
 //        supportActionBar?.hide()
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 formula.append(texts[i][j]?.text)
                                 printFormula(true)
+                                iniRecords(recordS)
                             }
                         }
                     }
@@ -127,8 +129,10 @@ class MainActivity : AppCompatActivity() {
                                 }else{
                                     recordDao.insertRecord(record)
                                 }
-                                val recordS: List<String> = recordDao.getAllRecord()
+                                recordS = recordDao.getAllRecord()
                                 iniRecords(recordS)
+                                Log.d("*********************", "$howManyRecords")
+                                Log.d("+++++++++++++++++++++", recordS.toString())
                                 done = true
                                 howManyRecords++
                                 printFormula(false)
@@ -150,6 +154,7 @@ class MainActivity : AppCompatActivity() {
     private fun iniRecords(records: List<String>){
         records.forEach {
             recordsText.append(it + "\n")
+            Log.d("+++++++++++++++++++++", it)
         }
     }
 

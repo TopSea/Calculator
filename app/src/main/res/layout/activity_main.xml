@@ -409,27 +409,23 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.96" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/records"
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/records_text"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="bottom"
-        android:text="@string/records"
-        android:textAlignment="textEnd"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline11"
-        app:layout_constraintEnd_toEndOf="@+id/records"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlCompat" />
+        <TextView
+            android:id="@+id/records_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/records"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18sp"
+            tools:ignore="RtlCompat" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
