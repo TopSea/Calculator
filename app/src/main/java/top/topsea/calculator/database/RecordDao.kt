@@ -17,7 +17,7 @@ interface RecordDao {
     fun updateRecord(record: Record)
 
     @Insert
-    fun insertAll(vararg record: Record)
+    fun insertRecord(record: Record)
 
     @Delete
     fun delete(record: Record)
